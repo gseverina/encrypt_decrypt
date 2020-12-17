@@ -20,10 +20,19 @@
 # output = "1n4th2r m2ss1g2 h2r2!"
 
 
+from timeit import timeit
+from random import choice
+from string import ascii_lowercase
+
+
 CODES_ENCRYPT = {'a': '1', 'e': '2', 'i': '3', 'o': '4', 'u': '5'}
 CODES_DECRYPT = {'1': 'a', '2': 'e', '3': 'i', '4': 'o', '5': 'u'}
 VOWELS = 'aeiou'
 NUMBERS = '12345'
+
+
+def generate_large_message(size=100):
+    return ''.join([choice(ascii_lowercase) for _ in range(size)])
 
 
 def __encrypt(message):
@@ -61,6 +70,10 @@ def encrypt_decrypt(message, encrypt=True):
     return __decrypt(message)
 
 
+def test_large_message():
+    encrypt_decrypt(generate_large_message(100000))
+
+
 if __name__ == "__main__":
     # Tests:
     assert encrypt_decrypt("another message here!") == "1n4th2r m2ss1g2 h2r2!"
@@ -72,6 +85,4 @@ if __name__ == "__main__":
     assert encrypt_decrypt('', False) == ''
     assert encrypt_decrypt(None) is None
     assert encrypt_decrypt(None, False) is None
-
-
-
+    assert timeit(test_large_message, number=25) < 2.15
